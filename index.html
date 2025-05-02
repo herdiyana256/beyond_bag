@@ -25,18 +25,20 @@
             font-family: 'Poppins', sans-serif;
             background-color: var(--primary);
             color: var(--light);
-            height: 100vh;
+            min-height: 100vh; /* Changed from height to min-height */
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
             position: relative;
+            padding: 20px; /* Added padding for mobile */
+            overflow-y: auto; /* Enable scrolling */
         }
         
         .container {
             text-align: center;
             padding: 2rem;
             max-width: 800px;
+            width: 100%; /* Added width */
             z-index: 10;
             background-color: rgba(44, 62, 80, 0.85);
             border-radius: 15px;
@@ -44,12 +46,20 @@
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             animation: fadeIn 1s ease-out;
+            margin: 20px 0; /* Added margin */
         }
         
         .logo {
             width: 120px;
             margin-bottom: 1.5rem;
             animation: bounce 2s infinite;
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
         }
         
         h1 {
@@ -132,7 +142,7 @@
         }
         
         .floating-bags {
-            position: absolute;
+            position: fixed; /* Changed from absolute to fixed */
             width: 100%;
             height: 100%;
             top: 0;
@@ -147,6 +157,29 @@
             background-repeat: no-repeat;
             opacity: 0.7;
             animation: float 15s infinite linear;
+        }
+        
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        .language-btn {
+            background: rgba(52, 152, 219, 0.7);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .language-btn:hover {
+            background: rgba(52, 152, 219, 1);
+            transform: scale(1.05);
         }
         
         @keyframes float {
@@ -199,16 +232,25 @@
         
         @media (max-width: 768px) {
             .container {
-                width: 90%;
+                width: 95%;
                 padding: 1.5rem;
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
             h2 {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
+            }
+            
+            .logo {
+                width: 100px;
+            }
+            
+            .language-switcher {
+                top: 10px;
+                right: 10px;
             }
         }
     </style>
@@ -216,13 +258,19 @@
 <body>
     <div class="floating-bags" id="floatingBags"></div>
     
+    <div class="language-switcher">
+        <button class="language-btn" id="languageBtn">ID</button>
+    </div>
+    
     <div class="container">
-        <img src="/beyond_.png" alt="Beyond Bag Logo" class="logo">
-        <img src="/kcs.png" alt="Beyond Bag Logo" class="logo">
+        <div class="logo-container">
+            <img src="/beyond_.png" alt="Beyond Bag Logo" class="logo">
+            <img src="/kcs.png" alt="Kharisma Cahaya Sejahtera Logo" class="logo">
+        </div>
 
-        <h1>PT Kharisma Cahaya Sejahtera</h1>
-        <h2>Website Under Maintenance</h2>
-        <p>We're currently working hard to improve our website and bring you a better experience. We'll be back soon with exciting updates about our premium product: <strong>Beyond Bag</strong>!</p>
+        <h1 id="companyName">PT Kharisma Cahaya Sejahtera</h1>
+        <h2 id="maintenanceTitle">Website Under Maintenance</h2>
+        <p id="maintenanceText">We're currently working hard to improve our website and bring you a better experience. We'll be back soon with exciting updates about our premium product: <strong>Beyond Bag</strong>!</p>
         
         <div class="progress-container">
             <div class="progress-bar"></div>
@@ -231,10 +279,10 @@
         <div class="countdown" id="countdown">Estimated time remaining: 48:00:00</div>
         
         <div class="contact-info">
-            <h3><i class="fas fa-info-circle"></i> Contact Information</h3>
-            <p><i class="fas fa-building"></i> Plaza Aminta Lt. 5 / 508, Jakarta Selatan, DKI Jakarta 12310</p>
-            <p><i class="fas fa-phone"></i> Contact Person: Kamal - 0817801718</p>
-            <p><i class="fas fa-envelope"></i> Email: info@kharismacsejahtera.com</p>
+            <h3><i class="fas fa-info-circle"></i> <span id="contactTitle">Contact Information</span></h3>
+            <p><i class="fas fa-building"></i> <span id="address">Plaza Aminta Lt. 5 / 508, Jakarta Selatan, DKI Jakarta 12310</span></p>
+            <p><i class="fas fa-phone"></i> <span id="contactPerson">Contact Person: Kamal - 0817801718</span></p>
+            <p><i class="fas fa-envelope"></i> <span id="email">Email: info@kharismacsejahtera.com</span></p>
         </div>
         
         <div class="social-links">
@@ -242,11 +290,37 @@
             <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
             <a href="https://wa.me/62817801718" target="_blank" title="WhatsApp">
                 <i class="fab fa-whatsapp"></i>
-              </a>
-                      </div>
+            </a>
+        </div>
     </div>
 
     <script>
+        // Language content
+        const content = {
+            en: {
+                companyName: "PT Kharisma Cahaya Sejahtera",
+                maintenanceTitle: "Website Under Maintenance",
+                maintenanceText: "We're currently working hard to improve our website and bring you a better experience. We'll be back soon with exciting updates about our premium product: <strong>Beyond Bag</strong>!",
+                contactTitle: "Contact Information",
+                address: "Plaza Aminta Lt. 5 / 508, Jakarta Selatan, DKI Jakarta 12310",
+                contactPerson: "Contact Person: Kamal - 0817801718",
+                email: "Email: info@kharismacsejahtera.com",
+                countdownPrefix: "Estimated time remaining: ",
+                readyMessage: "We're almost ready!"
+            },
+            id: {
+                companyName: "PT Kharisma Cahaya Sejahtera",
+                maintenanceTitle: "Website Dalam Pemeliharaan",
+                maintenanceText: "Kami sedang bekerja keras untuk meningkatkan website kami dan memberikan pengalaman yang lebih baik. Kami akan segera kembali dengan pembaruan menarik tentang produk premium kami: <strong>Beyond Bag</strong>!",
+                contactTitle: "Informasi Kontak",
+                address: "Plaza Aminta Lt. 5 / 508, Jakarta Selatan, DKI Jakarta 12310",
+                contactPerson: "Kontak Person: Kamal - 0817801718",
+                email: "Email: info@kharismacsejahtera.com",
+                countdownPrefix: "Perkiraan waktu tersisa: ",
+                readyMessage: "Kami hampir siap!"
+            }
+        };
+
         // Create floating bags
         function createFloatingBags() {
             const container = document.getElementById('floatingBags');
@@ -296,30 +370,62 @@
         }
         
         // Countdown timer (set to 48 hours from now)
-        function updateCountdown() {
+        function updateCountdown(lang = 'en') {
             const now = new Date();
             const target = new Date(now.getTime() + 48 * 60 * 60 * 1000); // 48 hours from now
             
             const diff = target - now;
             
             if (diff <= 0) {
-                document.getElementById('countdown').textContent = "We're almost ready!";
+                document.getElementById('countdown').textContent = content[lang].readyMessage;
                 return;
             }
             
             const hours = Math.floor(diff / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000;
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
             
             document.getElementById('countdown').textContent = 
-                `Estimated time remaining: ${hours}:${Math.floor(minutes).toString().padStart(2, '0')}:${Math.floor(seconds).toString().padStart(2, '0')}`;
+                `${content[lang].countdownPrefix}${hours}:${Math.floor(minutes).toString().padStart(2, '0')}:${Math.floor(seconds).toString().padStart(2, '0')}`;
+        }
+        
+        // Change language
+        function changeLanguage(lang) {
+            document.getElementById('companyName').textContent = content[lang].companyName;
+            document.getElementById('maintenanceTitle').textContent = content[lang].maintenanceTitle;
+            document.getElementById('maintenanceText').innerHTML = content[lang].maintenanceText;
+            document.getElementById('contactTitle').textContent = content[lang].contactTitle;
+            document.getElementById('address').textContent = content[lang].address;
+            document.getElementById('contactPerson').textContent = content[lang].contactPerson;
+            document.getElementById('email').textContent = content[lang].email;
+            updateCountdown(lang);
+            
+            // Update button text
+            document.getElementById('languageBtn').textContent = lang === 'en' ? 'ID' : 'EN';
+            
+            // Store preference
+            localStorage.setItem('preferredLanguage', lang);
         }
         
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             createFloatingBags();
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
+            
+            // Check for language preference
+            const preferredLanguage = localStorage.getItem('preferredLanguage') || 'en';
+            changeLanguage(preferredLanguage);
+            
+            // Set up language toggle
+            document.getElementById('languageBtn').addEventListener('click', () => {
+                const currentLang = document.getElementById('languageBtn').textContent === 'EN' ? 'en' : 'id';
+                changeLanguage(currentLang);
+            });
+            
+            // Update countdown every second
+            setInterval(() => {
+                const currentLang = document.getElementById('languageBtn').textContent === 'EN' ? 'id' : 'en';
+                updateCountdown(currentLang);
+            }, 1000);
         });
     </script>
 </body>
